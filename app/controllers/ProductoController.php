@@ -14,7 +14,23 @@ if (isset($_SERVER['REQUEST_METHOD'])){
       echo json_encode($producto->getAll());
       break;
     case 'POST':
-      
+      //Los datos llegan del cliente en formato: JSON/XML/TXT/FORMDATA
+      $input = file_get_contents('php://input');
+      $dataJSON = json_decode($input, true);
+
+      //Registrar un nuevo producto
+      $registro = [
+        'idmarca'     => htmlspecialchars($dataJSON['idmarca']),
+        'tipo'        => htmlspecialchars($dataJSON['tipo']),
+        'descripcion' => htmlspecialchars($dataJSON['descripcion']),
+        'precio'      => htmlspecialchars($dataJSON['precio']),
+        'garantia'    => htmlspecialchars($dataJSON['garantia']),
+        'esnuevo'     => htmlspecialchars($dataJSON['esnuevo'])
+      ];
+
+      $n = $producto->add($registro);
+      echo json_encode(["rows" => $n]); //{"rows": 1}
+
       break;
   }
 

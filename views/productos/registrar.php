@@ -78,5 +78,44 @@
 
   </div> <!-- ./container -->
   
+  <script>
+    //REFERENCIA
+    const formulario = document.querySelector("#formulario-registro");
+    const marcas = document.querySelector("#marcas");
+    const tipo = document.querySelector("#tipo");
+    const descripcion = document.querySelector("#descripcion");
+    const precio = document.querySelector("#precio");
+    const garantia = document.querySelector("#garantia");
+    const condicion = document.querySelector("#condicion");
+
+    function guardarDato(){
+      //Method: POST (empaquetar los datos JSON) >>> Backend (JSON {"rows": 1})
+      fetch(`../../app/controllers/ProductoController.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          idmarca     : marcas.value,
+          tipo        : tipo.value,
+          descripcion : descripcion.value,
+          precio      : parseFloat(precio.value),
+          garantia    : parseInt(garantia.value),
+          esnuevo     : condicion.value
+        })
+      })
+        .then(response => { return response.json() })
+        .then(data => { console.log(data) })
+        .catch(error => { console.error(error) });
+    }
+
+    formulario.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      if (confirm("¿Desea registrar el producto?")){
+        guardarDato();
+      }
+    });
+
+  </script>
+
 </body>
 </html>
