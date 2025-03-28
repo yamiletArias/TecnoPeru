@@ -70,19 +70,3 @@ class Producto{
   }
 
 }
-
-/*
-$producto = new Producto();
-
-$registro = [
-  "idmarca"     => 1,
-  "tipo"        => "Tablet",
-  "descripcion" => "Modelo A7",
-  "precio"      => 900,
-  "garantia"    => 12,
-  "esnuevo"     => "S"
-];
-
-$n = $producto->add($registro);
-var_dump( $n );
-*/
