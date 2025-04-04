@@ -61,8 +61,18 @@ class Producto{
     return 1;
   }
 
-  public function delete(): int{
-    return 1;
+  public function delete($params = []): int{
+    $numRows = 0;
+    try{
+      $sql = "DELETE FROM productos WHERE id = ?"; //Eliminacion fisica - logica
+      $stmt = $this->conexion->prepare($sql);
+      $stmt->execute(array($params['idproducto']));
+      $numRows = $stmt->rowCount();
+
+    }catch(PDOException $e){
+      throw new Exception($e->getMessage());
+    }
+    return $numRows;
   }
 
   public function getById(): array{
