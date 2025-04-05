@@ -63,10 +63,11 @@
       3. Agregar comandos(botones)
     */
     const tabla = document.querySelector("#tabla-productos tbody");
+    let enlace = null; //objeto publico - dinamico
 
     function obtenerDatos() {
       //fetch(URL_CONTROLADOR).then(JSON).then(DATOS).catch(ERROR)
-      fetch(`../../app/controllers/ProductoController.php`, {
+      fetch(`../../app/controllers/ProductoController.php?task=getAll`, {
         method: 'GET'
       })
         .then(response => { return response.json() })
@@ -96,36 +97,45 @@
     //Get     : en URL
     //POST    : JSON
     //DELETE  : EN LA URL (miweb.com/producto/5)
-    function eliminarProducto(idproducto){
-      fetch(`../../app/controllers/ProductoController.php`, {method: 'DELETE'})
-        .then(response => { return response.json() })
-        .then(data => { console.log(data) })
-        .catch(error => { console.log(error) });
+    function eliminarProducto(ideliminar){
+      fetch(`../../app/controllers/ProductoController.php/${ideliminar}`, {method: 'DELETE'})
+        .then(response => {return response.json()})
+        .then(data => {
+          if(data.rows >0){
+            const fila = enlace.closest('tr');
+            if (fila) {fila.remove(); }
+          }else {
+            alert("No se pudo eliminar le registro ");
+          }
+        })
+        .catch(error => {console.error(error)});
+      
     }
 
-    document.addEventListener("DOMContentLoaded", () =>{
-      //Cuando la pagina esta Lista, renderiza los datos
+    document.addEventListener("DOMContentLoaded", () => {
+      //CUando la pagina esta lista,renderiza los datos
       obtenerDatos()
 
-      //¿se puede asociar el evento a un objeto que NO existe? => NO
+      //¿Se puede asociar el venete a un objeto que no exite? => !NO!
       //Solucion => "delegacion de eventos"
-      tabla.addEventListener("click", (event) =>{
-        //boton eliminar
-        //En css podemos agregar a <i> pointer-events: none
-        const enlace = event.target.closest("a");
+      tabla.addEventListener("click", (event) => {
+        //enlacee boton elimnar
+        //en css podemos agregar a <u> poninter-events: none
+        enlace = event.target.closest("a"); //Busca la etiqueta "a" proxima
         
-        //Identificamos el anlace
+        //Idewntifacion el enlace
         if(enlace && enlace.classList.contains("delete")){
           event.preventDefault(); //Hipervinculo deja de funcionar
-
           const idproducto = parseInt(enlace.getAttribute("data-idproducto"));
-          console.log(idproducto);
-
-          if(confirm("¿Esta seguro de eliminar el registro?")){
+          
+          if(confirm("¿Esta seguro de eliminar el registro")){
             eliminarProducto(idproducto);
           }
+
         }
-      })
+
+
+      });
     });
   </script>
 

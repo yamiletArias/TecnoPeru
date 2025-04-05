@@ -64,19 +64,31 @@ class Producto{
   public function delete($params = []): int{
     $numRows = 0;
     try{
-      $sql = "DELETE FROM productos WHERE id = ?"; //Eliminacion fisica - logica
-      $stmt = $this->conexion->prepare($sql);
-      $stmt->execute(array($params['idproducto']));
-      $numRows = $stmt->rowCount();
-
+      $sql = "DELETE FROM productos WHERE id =?"; ///Eliminacion fisica - logica
+      $stms = $this->conexion->prepare($sql);
+      $stms->execute(array($params['idproducto']));
+      $numRows = $stms->rowCount();
     }catch(PDOException $e){
       throw new Exception($e->getMessage());
     }
+
+    
     return $numRows;
   }
 
-  public function getById(): array{
-    return [];
+  public function getById($id): array{
+    $result = [];
+
+    try{
+      $sql = "SELECT * FROM productos WHERE id = ?";
+      $stmt = $this->conexion->prepare($sql);
+      $stmt->execute(array($id));
+      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }catch(PDOException $e){
+      throw new Exception($e->getMessage());
+    }
+    
+    return $result;
   }
 
 }
