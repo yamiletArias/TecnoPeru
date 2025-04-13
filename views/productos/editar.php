@@ -79,10 +79,10 @@
 
   <script>
     // Definimos la cantidad de registros estáticos (en este ejemplo, 10)
-    const cantidadEstaticos = 10;
+    const cantidadEstaticos = 9;
     const urlParams = new URLSearchParams(window.location.search);
     const idParam = urlParams.get("id");
-    const indice = parseInt(idParam, 11);
+    const indice = parseInt(idParam, 9);
     if (indice < cantidadEstaticos) {
       alert("No se puede editar un registro estático.");
       window.location.href = "listar.php";
