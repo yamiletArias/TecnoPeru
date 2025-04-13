@@ -22,7 +22,11 @@
       <div class="card-header">
         <div class="row">
           <div class="col"><strong>Lista de productos</strong></div>
-          <div class="col text-end"><a href="registrar.php" class="btn btn-sm btn-success"
+          <div class="col text-end">
+            <a href="../../index.html" class="btn btn-sm btn-secondary"
+              style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Regresar al
+              dashboard</a>
+            <a href="registrar.php" class="btn btn-sm btn-success"
               style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Registrar</a>
           </div>
         </div>

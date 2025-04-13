@@ -16,7 +16,7 @@
           <div class="row">
             <div class="col"><strong>Actualizar producto</strong></div>
             <div class="col text-end">
-              <a href="listar.html" class="btn btn-sm btn-outline-success" 
+              <a href="listar.php" class="btn btn-sm btn-outline-success" 
                  style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
                 Mostrar lista
               </a>
