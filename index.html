@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TecnoPerú</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a1c2c 0%, #2a3045 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      padding: 1rem 0;
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #4f46e5;
+    }
+
+    .nav-links a {
+      color: #ffffff;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #4f46e5;
+    }
+
+    .hero {
+      padding: 3rem 0 1rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, #4f46e5, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    .card-section {
+      padding: 2rem 0;
+      flex-grow: 1;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2rem;
+      border-radius: 0.75rem;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .card h3 {
+      color: #4f46e5;
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .card a {
+      display: inline-block;
+      background: #4f46e5;
+      color: white;
+      padding: 0.6rem 1.4rem;
+      text-decoration: none;
+      border-radius: 0.375rem;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .card a:hover {
+      background: #4338ca;
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 2.5rem 0;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">TecnoPerú</div>
+        <div class="nav-links">
+          <a href="./views/productos/listar.php">Productos</a>
+          <a href="./views/productos/listar.php">Usuarios</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Bienvenido a TecnoPerú</h1>
+        <p>Explora nuestros módulos de gestión de productos y usuarios.</p>
+      </div>
+    </section>
+
+    <section class="card-section" id="productos">
+      <div class="container">
+        <div class="cards">
+          <div class="card">
+            <h3>Productos</h3>
+            <p>Accede a la lista de los productos registrados</p>
+            <a href="./views/productos/listar.php">Ver productos</a>
+          </div>
+          <div class="card">
+            <h3>Usuarios</h3>
+            <p>Accede a la lista de usuarios registrados.</p>
+            <a href="./views/usuarios/listar.php">Ver usuarios</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2024 TecnoPerú - Todos los derechos reservados</p>
+  </footer>
+</body>
+</html>
