@@ -1,0 +1,82 @@
+  // listar producto
+  <script>
+    /* 
+    Consideraciones
+      1. Nunca devolver TODAS las filas de la tabla
+      2. Mostrar solo los campos relevantes
+      3. Agregar comandos(botones)
+    */
+    const tabla = document.querySelector("#tabla-productos tbody");
+    let enlace = null; //objeto publico - dinamico
+
+    function obtenerDatos() {
+      //fetch(URL_CONTROLADOR).then(JSON).then(DATOS).catch(ERROR)
+      fetch(`../../app/controllers/ProductoController.php?task=getAll`, {
+        method: 'GET'
+      })
+        .then(response => { return response.json() })
+        .then(data => {
+          data.forEach(element => {
+            tabla.innerHTML += `
+              <tr>
+                <td>${element.id}</td>
+                <td>${element.marca}</td>
+                <td>${element.tipo}</td>
+                <td>${element.descripcion}</td>
+                <td>${element.precio}</td>
+                <td>${element.garantia}</td>
+                <td>${element.esnuevo}</td>
+                <td>
+                  <a href='editar.php?id=${element.id}' class='btn btn-sm btn-info'><i class="fa-solid fa-pen"></i></a>
+                  <a href='#' data-idproducto='${element.id}' class='btn btn-sm btn-danger delete'><i class="fa-solid fa-trash"></i></a>
+                </td>
+              </tr>
+            `;
+          });
+        })
+        .catch(error => { console.error(error) });
+    }
+
+    //¿Como enviamos los datos?
+    //Get     : en URL
+    //POST    : JSON
+    //DELETE  : EN LA URL (miweb.com/producto/5)
+    function eliminarProducto(ideliminar) {
+      fetch(`../../app/controllers/ProductoController.php/${ideliminar}`, { method: 'DELETE' })
+        .then(response => { return response.json() })
+        .then(data => {
+          if (data.rows > 0) {
+            const fila = enlace.closest('tr');
+            if (fila) { fila.remove(); }
+          } else {
+            alert("No se pudo eliminar le registro ");
+          }
+        })
+        .catch(error => { console.error(error) });
+
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      //CUando la pagina esta lista,renderiza los datos
+      obtenerDatos()
+
+      //¿Se puede asociar el venete a un objeto que no exite? => !NO!
+      //Solucion => "delegacion de eventos"
+      tabla.addEventListener("click", (event) => {
+        //enlacee boton elimnar
+        //en css podemos agregar a <u> poninter-events: none
+        enlace = event.target.closest("a"); //Busca la etiqueta "a" proxima
+
+        //Idewntifacion el enlace
+        if (enlace && enlace.classList.contains("delete")) {
+          event.preventDefault(); //Hipervinculo deja de funcionar
+          const idproducto = parseInt(enlace.getAttribute("data-idproducto"));
+
+          if (confirm("¿Esta seguro de eliminar el registro")) {
+            eliminarProducto(idproducto);
+          }
+
+        }
+      });
+    });
+  </script>

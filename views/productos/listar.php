@@ -6,21 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listar</title>
 
-  <!-- Boostrap -->
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-  <!-- Font awesome -->
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 </head>
 
 <body>
-
-  <!-- ALT + SHIFT + F = ordenar código -->
-  <!-- ALT + SHIFT + A = comentar código -->
 
   <div class="container">
     <div class="card mt-3">
@@ -47,7 +42,7 @@
             </tr>
           </thead>
           <tbody>
-            <!-- Contenido dinámico -->
+            <!-- Aquí se cargarán los productos dinámicamente -->
           </tbody>
         </table>
       </div> <!-- ./card-body -->
@@ -55,90 +50,79 @@
   </div> <!-- ./container -->
 
   <script>
+    const tbody = document.querySelector("#tabla-productos tbody");
 
-    /* 
-    Consideraciones
-      1. Nunca devolver TODAS las filas de la tabla
-      2. Mostrar solo los campos relevantes
-      3. Agregar comandos(botones)
-    */
-    const tabla = document.querySelector("#tabla-productos tbody");
-    let enlace = null; //objeto publico - dinamico
+    const datosEstaticos = [
+      { marca: "Samsung", tipo: "Celular", descripcion: "Galaxy S22", precio: 3500, garantia: "12", nuevo: true },
+      { marca: "Samsung", tipo: "Televisor", descripcion: "Smart TV 50", precio: 2200, garantia: "24", nuevo: false },
+      { marca: "Lenovo", tipo: "Laptop", descripcion: "Lenovo 16ram", precio: 2800, garantia: "12", nuevo: true },
+      { marca: "Samsung", tipo: "Audífonos", descripcion: "WH-1000XM5", precio: 1200, garantia: "6", nuevo: true },
+      { marca: "Samsung", tipo: "Celular", descripcion: "Samsung 13", precio: 4600, garantia: "18", nuevo: true },
+      { marca: "Lenovo", tipo: "Laptop", descripcion: "Lenovo 3", precio: 2500, garantia: "12", nuevo: false },
+      { marca: "Samsung", tipo: "Refrigeradora", descripcion: "2 puertas, 300L", precio: 1900, garantia: "36", nuevo: false },
+      { marca: "Samsung", tipo: "Tablet", descripcion: "Samsung 10.4", precio: 1300, garantia: "12", nuevo: true },
+      { marca: "Lenovo", tipo: "Laptop", descripcion: "Lenovo X512", precio: 2700, garantia: "24 ", nuevo: true },
+    ];
 
-    function obtenerDatos() {
-      //fetch(URL_CONTROLADOR).then(JSON).then(DATOS).catch(ERROR)
-      fetch(`../../app/controllers/ProductoController.php?task=getAll`, {
-        method: 'GET'
-      })
-        .then(response => { return response.json() })
-        .then(data => {
-          data.forEach(element => {
-            tabla.innerHTML += `
-              <tr>
-                <td>${element.id}</td>
-                <td>${element.marca}</td>
-                <td>${element.tipo}</td>
-                <td>${element.descripcion}</td>
-                <td>${element.precio}</td>
-                <td>${element.garantia}</td>
-                <td>${element.esnuevo}</td>
-                <td>
-                  <a href='editar.php?id=${element.id}' class='btn btn-sm btn-info'><i class="fa-solid fa-pen"></i></a>
-                  <a href='#' data-idproducto='${element.id}' class='btn btn-sm btn-danger delete'><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-            `;
-          });
-        })
-        .catch(error => { console.error(error) });
-    }
+    function cargarProductos() {
+      const nuevosProductos = JSON.parse(localStorage.getItem("productos")) || [];
 
-    //¿Como enviamos los datos?
-    //Get     : en URL
-    //POST    : JSON
-    //DELETE  : EN LA URL (miweb.com/producto/5)
-    function eliminarProducto(ideliminar){
-      fetch(`../../app/controllers/ProductoController.php/${ideliminar}`, {method: 'DELETE'})
-        .then(response => {return response.json()})
-        .then(data => {
-          if(data.rows >0){
-            const fila = enlace.closest('tr');
-            if (fila) {fila.remove(); }
-          }else {
-            alert("No se pudo eliminar le registro ");
-          }
-        })
-        .catch(error => {console.error(error)});
-      
-    }
+      const productosCombinados = datosEstaticos.concat(nuevosProductos);
 
-    document.addEventListener("DOMContentLoaded", () => {
-      //CUando la pagina esta lista,renderiza los datos
-      obtenerDatos()
+      tbody.innerHTML = "";
 
-      //¿Se puede asociar el venete a un objeto que no exite? => !NO!
-      //Solucion => "delegacion de eventos"
-      tabla.addEventListener("click", (event) => {
-        //enlacee boton elimnar
-        //en css podemos agregar a <u> poninter-events: none
-        enlace = event.target.closest("a"); //Busca la etiqueta "a" proxima
-        
-        //Idewntifacion el enlace
-        if(enlace && enlace.classList.contains("delete")){
-          event.preventDefault(); //Hipervinculo deja de funcionar
-          const idproducto = parseInt(enlace.getAttribute("data-idproducto"));
-          
-          if(confirm("¿Esta seguro de eliminar el registro")){
-            eliminarProducto(idproducto);
-          }
-
-        }
-
-
+      productosCombinados.forEach((producto, index) => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${producto.marca}</td>
+          <td>${producto.tipo}</td>
+          <td>${producto.descripcion}</td>
+          <td>${producto.precio}</td>
+          <td>${producto.garantia}</td>
+          <td>${producto.nuevo ? "Sí" : "No"}</td>
+          <td>
+            <a href='editar.php?id=${index}' class='btn btn-sm btn-info'><i class="fa-solid fa-pen"></i></a>
+            <a href='#' data-idproducto='${index}' class='btn btn-sm btn-danger delete'><i class="fa-solid fa-trash"></i></a>
+          </td>
+        `;
+        tbody.appendChild(fila);
       });
-    });
-  </script>
 
+      document.querySelectorAll('.delete').forEach((btn) => {
+        btn.addEventListener('click', function () {
+          const idProducto = parseInt(this.getAttribute('data-idproducto'), 10);
+          eliminarProducto(idProducto);
+        });
+      });
+    }
+
+    function eliminarProducto(indice) {
+      const cantidadEstaticos = datosEstaticos.length;
+      if (indice < cantidadEstaticos) {
+        alert("No se puede eliminar un registro estático.");
+        return;
+      }
+
+      if (!confirm("¿Desea eliminar este registro?")) {
+        return;
+      }
+
+      const indiceRelativo = indice - cantidadEstaticos;
+
+      let nuevosProductos = JSON.parse(localStorage.getItem("productos")) || [];
+
+      // Eliminar el producto usando splice
+      nuevosProductos.splice(indiceRelativo, 1);
+
+      // Actualizar localStorage
+      localStorage.setItem("productos", JSON.stringify(nuevosProductos));
+
+      cargarProductos();
+    }
+
+    cargarProductos();
+  </script>
 </body>
 
 </html>

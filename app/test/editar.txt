@@ -1,0 +1,30 @@
+  //editar producto
+  <script>
+    //Identificar el ID enviado por GET (URL)
+    const formulario = document.querySelector("#formulario-registro");
+    const btnActualizar = document.querySelector("#btnActualizar");
+    const URL = new URLSearchParams(window.location.search); //search = barra de direccion
+    const id = URL.get('id');
+
+    function obtenerRegistro(){
+      fetch(`../../app/controllers/ProductoController.php?task=getById&idproducto=${id}`, { method: 'GET'})
+      .then(response => {return response.json() })
+      .then(data => {
+        if(data.length > 0) {
+          document.querySelector("#marcas").value = data [0].idmarca;
+          document.querySelector("#tipo").value = data [0].tipo;
+          document.querySelector("#descripcion").value = data [0].descripcion;
+          document.querySelector("#precio").value = data [0].precio;
+          document.querySelector("#garantia").value = data [0].garantia;
+          document.querySelector("#condicion").value = data [0].esnuevo;
+        }else{
+          //no existe..
+          formulario.reset();
+          btnActualizar.setAttribute("disabled", true);
+        }
+      })
+      .catch(error => { console.error(error) });
+    }
+
+    document.addEventListener("DOMContentLoaded", obtenerRegistro);
+  </script>
